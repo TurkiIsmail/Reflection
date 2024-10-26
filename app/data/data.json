@@ -1,0 +1,48 @@
+{
+    "questions": [
+        {   
+            "title":"Self-Reflection",
+            
+            "questions": [
+                "What are my biggest challenges right now ?",
+                "What do I want to let go of that no longer serves me?",
+                "What would I tell my younger self?"
+            ],
+            "questionlabels": [
+                "What are your biggest challenges right now ?",
+                "What are you most proud of accomplishing next year",
+               "What would you tell your younger self?"
+            ]
+           
+            
+        },
+        {   
+            "title":"Gratitude",
+            "questionlabels": [
+                "What was the best part of my day yesterday?",
+                "What small victories did I achieve today?",
+                "What are you most proud of accomplishing next year"
+            ],
+            "questions": [
+                "What was the best part of your day yesterday?",
+                "What small victories did you achieve today?",
+                "What are you grateful for ? (it can be anything even a nice weather)"
+            ]
+            
+        },
+        {   
+            "title":"Curiosity",
+            "questions": [
+                "What am I curious about learning or exploring?",
+                "What activities make me feel most alive and connected to myself?",
+                "What kind of job would I love doing, even without getting paid?"
+            ],
+            "questionlabels": [
+                "What are you curious about learning or exploring?",
+                "What activities make you feel most alive and connected to yourself?",
+                "What kind of job would you love doing, even without getting paid?"
+            ]
+            
+        }
+    ]
+}
