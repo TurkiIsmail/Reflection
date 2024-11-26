@@ -49,7 +49,7 @@ export default function MultiStepForm() {
     };
 
     return (
-        <div className="w-1/2 p-6 bg-neutral-800 rounded-lg shadow-lg">
+        <div className="w-1/2 min-[360px]:w-full md:w-1/2 p-6 bg-neutral-800 rounded-lg shadow-lg">
             <form onSubmit={(e) => {
                 e.preventDefault();
                 if (step === Questions.length) {

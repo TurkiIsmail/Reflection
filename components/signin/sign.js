@@ -21,7 +21,7 @@ export default function signin() {
     };
     return (
 
-        <div className=' flex justify-center items-center min-[320px]:mx-4 min-[362px]:mx-8 mt-16'>
+        <div className=' flex justify-center items-center minz-[320px]:mx-4 min-[362px]:mx-8 mt-16'>
             <motion.form
                 initial="initial"  // Specify the initial state
                 whileInView={"animate"}

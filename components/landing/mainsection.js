@@ -26,11 +26,11 @@ function mainsection() {
         <motion.div
             initial="initial"  // Specify the initial state
             whileInView={"animate"}
-            viewport={{ once: true }}
+
             // This should be whileHover, not hover
             // Specify the animate state
             variants={fadeInAnimationVariants}
-            className='flex  mx-10 justify-between'>
+            className='flex  mx-10 justify-between  w-100'>
             <div className='w-1/2 mt-52'>
                 <p className='text-4xl  font-bold'>Awareness Begins with Reflection.</p>
                 <p className='text-justify mt-6'>
@@ -38,7 +38,8 @@ function mainsection() {
                 </p>
                 <button className=' text-sm py-1 font-bold rounded-md mt-6 mr-4 underline underline-offset-2'>See plans</button>
                 <Link href={'/main'}> <button className=' text-sm py-2 px-6 font-bold rounded-md mt-6 bg-violet-600 hover:bg-violet-700 duration-300'>Get Started</button>
-                </Link></div>
+                </Link>
+            </div>
             <div className='w-1/2  mt-6'>
                 <Lottie animationData={Animation} loop={true} className='scale-75' />
             </div>
