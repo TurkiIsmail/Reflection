@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import question from "@/app/data/data.json";
 import { useRouter } from 'next/navigation'
-import "./Modal.css";
+import "./modal.css";
 
 export default function MultiStepForm() {
     const [step, setStep] = useState(1);
