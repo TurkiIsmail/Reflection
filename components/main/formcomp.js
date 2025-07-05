@@ -11,7 +11,13 @@ export default function MultiStepForm() {
     const [responses, setResponses] = useState({});
 
     const Questions = question.questions;
-    const nextStep = () => setStep((prev) => Math.min(prev + 1, Questions.length));
+    const nextStep = () => {
+        if (step === Questions.length) {
+            setModal(true);
+        } else {
+            setStep((prev) => Math.min(prev + 1, Questions.length));
+        }
+    };
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
     const router = useRouter()
     const [modal, setModal] = useState(false);
@@ -43,19 +49,74 @@ export default function MultiStepForm() {
         });
     };
 
-    const handleSubmit = () => {
-        console.log("Collected Responses:", responses);
-        // Process or send the collected responses as needed
+    // Combine all responses into a flat array for journal content (preserve order)
+    const getJournalContent = () => {
+        const arr = [];
+        // Ensure order by step and then by question index
+        Object.keys(responses)
+            .sort((a, b) => Number(a) - Number(b))
+            .forEach(stepKey => {
+                const stepObj = responses[stepKey] || {};
+                Object.keys(stepObj)
+                    .sort((a, b) => Number(a) - Number(b))
+                    .forEach(qIdx => {
+                        arr.push(stepObj[qIdx]);
+                    });
+            });
+        return JSON.stringify(arr);
+    };
+
+    const handleSubmit = async () => {
+        const content = getJournalContent();
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('You must be logged in to submit a journal.');
+            router.push('/login');
+            return;
+        }
+        try {
+            const res = await fetch('/api/journals', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ content })
+            });
+            if (!res.ok) throw new Error('Failed to save journal');
+            setModal(false);
+            router.push('/journals');
+        } catch (err) {
+            alert('Error saving journal: ' + err.message);
+        }
+    };
+
+    // Ref array for inputs to control focus
+    const inputRefs = [];
+    const setInputRef = (el, idx) => {
+        inputRefs[idx] = el;
     };
 
     return (
         <div className="w-1/2 min-[360px]:w-full md:w-1/2 p-6 bg-neutral-800 rounded-lg shadow-lg">
-            <form onSubmit={(e) => {
+            <form onSubmit={e => {
                 e.preventDefault();
+                // Validate all inputs for this step
+                const labels = Questions[step - 1].questionlabels;
+                const stepAnswers = responses[step] || {};
+                let allFilled = true;
+                for (let i = 0; i < labels.length; i++) {
+                    if (!stepAnswers[i] || stepAnswers[i].trim() === "") {
+                        allFilled = false;
+                        if (inputRefs[i]) inputRefs[i].focus();
+                        break;
+                    }
+                }
+                if (!allFilled) return;
                 if (step === Questions.length) {
-                    handleSubmit();
-
-
+                    setModal(true);
+                } else {
+                    nextStep();
                 }
             }}>
                 {Questions[step - 1] && (
@@ -76,10 +137,25 @@ export default function MultiStepForm() {
                                 <input
                                     type="text"
                                     placeholder=""
+                                    required
                                     className="w-full p-2 outline-none bg-neutral-700 focus:bg-violet-500/30 duration-300 rounded text-sm mb-4"
                                     onChange={(e) => handleInputChange(index, e.target.value)}
                                     value={responses[step]?.[index] || ""}
-
+                                    ref={el => setInputRef(el, index)}
+                                    onKeyDown={e => {
+                                        if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                                            e.preventDefault();
+                                            if (inputRefs[index + 1]) {
+                                                inputRefs[index + 1].focus();
+                                            }
+                                        }
+                                        if (e.key === 'ArrowUp') {
+                                            e.preventDefault();
+                                            if (inputRefs[index - 1]) {
+                                                inputRefs[index - 1].focus();
+                                            }
+                                        }
+                                    }}
                                 />
                             </div>
                         ))}
@@ -96,8 +172,7 @@ export default function MultiStepForm() {
                     </button>
 
                     <button
-                        type={step === Questions.length ? "submit" : "button"}
-                        onClick={step === Questions.length ? toggleModal : nextStep}
+                        type="submit"
                         className={"px-12 py-2 bg-violet-500 text-white rounded hover:bg-violet-600 duration-300" + (step === 1 ? " ml-auto" : "")}
                     >
                         {step === Questions.length ? "Submit" : "Next"}
@@ -108,12 +183,13 @@ export default function MultiStepForm() {
                             <div className="modal-content bg-neutral-800 ">
                                 <p className="mt-6 mb-4 text-center">Are you sure you want to submit this journal entry?</p>
                                 <div className="flex justify-center mb-6 mt-8">
-                                    <button onClick={toggleModal} className="px-6 p-2 mr-3 bg-neutral-700 rounded-md hover:bg-neutral-600  duration-500">
+                                    <button type="button" onClick={toggleModal} className="px-6 p-2 mr-3 bg-neutral-700 rounded-md hover:bg-neutral-600  duration-500">
                                         Close
                                     </button>
-                                    <button onClick={() => router.push('/')} className="px-6 p-2 rounded-md bg-violet-600 hover:bg-violet-700  duration-500 ">
+                                    <button type="button" onClick={handleSubmit} className="px-6 p-2 rounded-md bg-violet-600 hover:bg-violet-700  duration-500 ">
                                         Confirm
-                                    </button></div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

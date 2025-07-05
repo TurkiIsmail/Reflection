@@ -20,7 +20,7 @@ body.active-modal {
 }
 
 .overlay {
-    background: rgba(255, 0, 0, 0.473);
+    background: rgba(134, 134, 134, 0.473);
 }
 .modal-content {
     position: absolute;
