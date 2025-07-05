@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from "react";
 import { Trash2, Pencil } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import Nav from '@/components/navbar/nav';
 import Footer from '@/components/Footer/footer';
@@ -194,7 +195,7 @@ import questionData from '@/app/data/data.json';
     </div>
   );
 }
-export default function JournalsPage() {
+function JournalsPageInner() {
   const [journals, setJournals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
@@ -344,6 +345,11 @@ export default function JournalsPage() {
   );
 }
 
+export default function JournalsPage() {
+  return (
+    <Suspense>
+      <JournalsPageInner />
+    </Suspense>
+  );
+}
 
-
-// (removed duplicate or stub JournalModal declaration)
