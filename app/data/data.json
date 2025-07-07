@@ -13,7 +13,7 @@
                 "What are you most proud of accomplishing next year",
                "What would you tell your younger self?"
             ]
-           
+           ,"imgUrl":"/images/self-reflection.png"
             
         },
         {   
@@ -28,7 +28,8 @@
                 "What small victories did you achieve today?",
                 "What are you grateful for ? (it can be anything even a nice weather)"
             ]
-            
+            ,"imgUrl":"/images/Gratitude.png"
+
         },
         {   
             "title":"Curiosity",
@@ -42,7 +43,8 @@
                 "What activities make you feel most alive and connected to yourself?",
                 "What kind of job would you love doing, even without getting paid?"
             ]
-            
+            ,"imgUrl":"/images/Curiosity.png"
+
         }
     ]
 }

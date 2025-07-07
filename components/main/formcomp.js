@@ -98,103 +98,116 @@ export default function MultiStepForm() {
     };
 
     return (
-        <div className="w-1/2 min-[360px]:w-full md:w-1/2 p-6 bg-neutral-800 rounded-lg shadow-lg">
-            <form onSubmit={e => {
-                e.preventDefault();
-                // Validate all inputs for this step
-                const labels = Questions[step - 1].questionlabels;
-                const stepAnswers = responses[step] || {};
-                let allFilled = true;
-                for (let i = 0; i < labels.length; i++) {
-                    if (!stepAnswers[i] || stepAnswers[i].trim() === "") {
-                        allFilled = false;
-                        if (inputRefs[i]) inputRefs[i].focus();
-                        break;
+        <div className="flex flex-col md:flex-row items-center justify-center w-full">
+            {/* Form */}
+            <div className="w-full md:w-1/2 p-6 bg-neutral-800 rounded-lg shadow-lg">
+                <form onSubmit={e => {
+                    e.preventDefault();
+                    // Validate all inputs for this step
+                    const labels = Questions[step - 1].questionlabels;
+                    const stepAnswers = responses[step] || {};
+                    let allFilled = true;
+                    for (let i = 0; i < labels.length; i++) {
+                        if (!stepAnswers[i] || stepAnswers[i].trim() === "") {
+                            allFilled = false;
+                            if (inputRefs[i]) inputRefs[i].focus();
+                            break;
+                        }
                     }
-                }
-                if (!allFilled) return;
-                if (step === Questions.length) {
-                    setModal(true);
-                } else {
-                    nextStep();
-                }
-            }}>
-                {Questions[step - 1] && (
-                    <div>
-                        <h2 className="text-2xl font-semibold mb-4">{Questions[step - 1].title}</h2>
-                        <div className="relative w-full h-2 bg-gray-50/50 rounded mt-4 overflow-hidden mb-8">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${progress}%` }}
-                                transition={{ duration: 0.5 }}
-                                className="h-full bg-violet-500 rounded"
-                            />
-                        </div>
-
-                        {Questions[step - 1].questionlabels.map((question, index) => (
-                            <div key={index} className="">
-                                <label className="block mb-2 font-semibold text-sm">{question}</label>
-                                <input
-                                    type="text"
-                                    placeholder=""
-                                    required
-                                    className="w-full p-2 outline-none bg-neutral-700 focus:bg-violet-500/30 duration-300 rounded text-sm mb-4"
-                                    onChange={(e) => handleInputChange(index, e.target.value)}
-                                    value={responses[step]?.[index] || ""}
-                                    ref={el => setInputRef(el, index)}
-                                    onKeyDown={e => {
-                                        if (e.key === 'ArrowDown' || e.key === 'Enter') {
-                                            e.preventDefault();
-                                            if (inputRefs[index + 1]) {
-                                                inputRefs[index + 1].focus();
-                                            }
-                                        }
-                                        if (e.key === 'ArrowUp') {
-                                            e.preventDefault();
-                                            if (inputRefs[index - 1]) {
-                                                inputRefs[index - 1].focus();
-                                            }
-                                        }
-                                    }}
+                    if (!allFilled) return;
+                    if (step === Questions.length) {
+                        setModal(true);
+                    } else {
+                        nextStep();
+                    }
+                }}>
+                    {Questions[step - 1] && (
+                        <div>
+                            <h2 className="text-2xl font-semibold mb-4">{Questions[step - 1].title}</h2>
+                            <div className="relative w-full h-2 bg-gray-50/50 rounded mt-4 overflow-hidden mb-8">
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${progress}%` }}
+                                    transition={{ duration: 0.5 }}
+                                    className="h-full bg-violet-500 rounded"
                                 />
                             </div>
-                        ))}
-                    </div>
-                )}
 
-                <div className="w-full flex justify-between mt-6 mb-6">
-                    <button
-                        type="button"
-                        onClick={prevStep}
-                        className={"bg-transparent w-1/ text-white rounded hover:text-violet-200 duration-300 underline-offset-1" + (step === 1 ? " hidden" : "")}
-                    >
-                        <p className="underline underline-offset-4">Back</p>
-                    </button>
-
-                    <button
-                        type="submit"
-                        className={"px-12 py-2 bg-violet-500 text-white rounded hover:bg-violet-600 duration-300" + (step === 1 ? " ml-auto" : "")}
-                    >
-                        {step === Questions.length ? "Submit" : "Next"}
-                    </button>
-                    {modal && (
-                        <div className="modal ">
-                            <div onClick={toggleModal} className="overlay"></div>
-                            <div className="modal-content bg-neutral-800 ">
-                                <p className="mt-6 mb-4 text-center">Are you sure you want to submit this journal entry?</p>
-                                <div className="flex justify-center mb-6 mt-8">
-                                    <button type="button" onClick={toggleModal} className="px-6 p-2 mr-3 bg-neutral-700 rounded-md hover:bg-neutral-600  duration-500">
-                                        Close
-                                    </button>
-                                    <button type="button" onClick={handleSubmit} className="px-6 p-2 rounded-md bg-violet-600 hover:bg-violet-700  duration-500 ">
-                                        Confirm
-                                    </button>
+                            {Questions[step - 1].questionlabels.map((question, index) => (
+                                <div key={index} className="">
+                                    <label className="block mb-2 font-semibold text-sm">{question}</label>
+                                    <input
+                                        type="text"
+                                        placeholder=""
+                                        required
+                                        className="w-full p-2 outline-none bg-neutral-700 focus:bg-violet-500/30 duration-300 rounded text-sm mb-4"
+                                        onChange={(e) => handleInputChange(index, e.target.value)}
+                                        value={responses[step]?.[index] || ""}
+                                        ref={el => setInputRef(el, index)}
+                                        onKeyDown={e => {
+                                            if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                                                e.preventDefault();
+                                                if (inputRefs[index + 1]) {
+                                                    inputRefs[index + 1].focus();
+                                                }
+                                            }
+                                            if (e.key === 'ArrowUp') {
+                                                e.preventDefault();
+                                                if (inputRefs[index - 1]) {
+                                                    inputRefs[index - 1].focus();
+                                                }
+                                            }
+                                        }}
+                                    />
                                 </div>
-                            </div>
+                            ))}
                         </div>
                     )}
-                </div>
-            </form >
+
+                    <div className="w-full flex justify-between mt-6 mb-6">
+                        <button
+                            type="button"
+                            onClick={prevStep}
+                            className={"bg-transparent w-1/ text-white rounded hover:text-violet-200 duration-300 underline-offset-1" + (step === 1 ? " hidden" : "")}
+                        >
+                            <p className="underline underline-offset-4">Back</p>
+                        </button>
+
+                        <button
+                            type="submit"
+                            className={"px-12 py-2 bg-violet-500 text-white rounded hover:bg-violet-600 duration-300" + (step === 1 ? " ml-auto" : "")}
+                        >
+                            {step === Questions.length ? "Submit" : "Next"}
+                        </button>
+                        {modal && (
+                            <div className="modal ">
+                                <div onClick={toggleModal} className="overlay"></div>
+                                <div className="modal-content bg-neutral-800 ">
+                                    <p className="mt-6 mb-4 text-center">Are you sure you want to submit this journal entry?</p>
+                                    <div className="flex justify-center mb-6 mt-8">
+                                        <button type="button" onClick={toggleModal} className="px-6 p-2 mr-3 bg-neutral-700 rounded-md hover:bg-neutral-600  duration-500">
+                                            Close
+                                        </button>
+                                        <button type="button" onClick={handleSubmit} className="px-6 p-2 rounded-md bg-violet-600 hover:bg-violet-700  duration-500 ">
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </form >
+            </div>
+            {/* Image for current step */}
+            <div className="hidden md:flex w-full md:w-1/2 justify-center items-center mt-8 md:mt-0">
+                {Questions[step - 1]?.imgUrl && (
+                    <img
+                        src={Questions[step - 1].imgUrl}
+                        alt={Questions[step - 1].title}
+                        className="max-w-md w-full h-auto rounded-lg "
+                    />
+                )}
+            </div>
         </div >
     );
 }

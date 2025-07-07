@@ -27,7 +27,7 @@ function Mainsection() {
             initial="initial"
             whileInView={"animate"}
             variants={fadeInAnimationVariants}
-            className='flex mx-10 justify-between w-100 flex-col sm:flex-row'>
+            className='flex-grow flex mx-10 justify-between w-100 flex-col sm:flex-row'>
             <div className='w-full sm:w-1/2 mt-16 sm:mt-52'>
                 <p className='text-4xl font-bold'>Awareness Begins with Reflection.</p>
                 <p className='text-justify mt-6'>

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 export default function Footer() {
     return (
-        <footer className="bg-neutral-700 w-full p-8 flex flex-col sm:flex-row flex-wrap gap-8 justify-between text-neutral-100 mt-20 sm:mt-0">
+        <footer className="bg-neutral-700 w-full p-8 flex flex-col sm:flex-row flex-wrap gap-8 justify-between text-neutral-100 mt-auto">
             <div className="flex-1 min-w-[180px] mb-6 sm:mb-0">
                 <h3 className='font-bold mb-2'>Reflection</h3>
                 <p className='mb-1'>A journaling & self-reflection app</p>
